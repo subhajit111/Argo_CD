@@ -34,8 +34,9 @@ spec:
     namespace: default
   syncPolicy:
     automated: {}
-  # Set the Docker image in the Kustomization file to pull a simple "hello-world" image
+  # Set the Docker image in the Kustomization file
   kustomize:
     images:
       - name: hello-world
+        newName: hello-world
         newTag: latest
