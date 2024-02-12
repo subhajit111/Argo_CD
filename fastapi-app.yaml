@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fastapi-app
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/yourusername/your-repo
+    targetRevision: main
+    path: .
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+  # Use Kustomize to manage Kubernetes manifests
+  syncWave: 1
+  syncOptions:
+    - CreateNamespace=true
+  # Application source code sync options
+  source:
+    path: .
+    repoURL: https://github.com/yourusername/your-repo
+    targetRevision: main
+    directory:
+      recurse: true
+  # Use Kustomize to manage Kubernetes manifests
+  plugin:
+    name: kustomize
+  # Deploy the application using the specified Kustomization file
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated: {}
+  # Set the Docker image in the Kustomization file to pull a simple "hello-world" image
+  kustomize:
+    images:
+      - name: hello-world
+        newTag: latest
